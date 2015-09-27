@@ -1,4 +1,4 @@
-package com.timtoy.dj_android_app;
+package com.example.mkammeyer.musicplayer;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
