@@ -22,7 +22,9 @@ import android.util.Log;
 public class MusicService extends Service {
 
     //media player
+    int numSongs;
     private MediaPlayer player;
+    private MediaPlayer player2;
     //song list
     private ArrayList<Song> songs;
     //current position
@@ -48,10 +50,18 @@ public class MusicService extends Service {
         //create the service
         super.onCreate();
         //initialize position
+        numSongs=0;
         songPosn=0;
         //create player
         player = new MediaPlayer();
         player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
+            }
+        });
+        player2 = new MediaPlayer();
+        player2.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mp.start();
@@ -65,6 +75,9 @@ public class MusicService extends Service {
         player.setWakeMode(getApplicationContext(),
                 PowerManager.PARTIAL_WAKE_LOCK);
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        player2.setWakeMode(getApplicationContext(),
+                PowerManager.PARTIAL_WAKE_LOCK);
+        player2.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
 
     public void setList(ArrayList<Song> theSongs){
@@ -78,25 +91,47 @@ public class MusicService extends Service {
     }
 
     public void playSong(){
-        //play a song
-        player.reset();
-        //get song
-        Song playSong = songs.get(songPosn);
-        //get id
-        long currSong = playSong.getID();
-        //set uri
-        Uri trackUri = ContentUris.withAppendedId(
-                android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                currSong);
+        if(numSongs % 2 == 0) {
+            //play a song
+            player.reset();
+            //get song
+            Song playSong = songs.get(songPosn);
+            //get id
+            long currSong = playSong.getID();
+            //set uri
+            Uri trackUri = ContentUris.withAppendedId(
+                    android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    currSong);
 
-        try{
-            player.setDataSource(getApplicationContext(), trackUri);
-        }
-        catch(Exception e){
-            Log.e("MUSIC SERVICE", "Error setting data source", e);
-        }
+            try {
+                player.setDataSource(getApplicationContext(), trackUri);
+            } catch (Exception e) {
+                Log.e("MUSIC SERVICE", "Error setting data source", e);
+            }
 
-        player.prepareAsync();
+            player.prepareAsync();
+        }
+        else {
+            //play a song
+            player2.reset();
+            //get song
+            Song playSong = songs.get(songPosn);
+            //get id
+            long currSong = playSong.getID();
+            //set uri
+            Uri trackUri = ContentUris.withAppendedId(
+                    android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    currSong);
+
+            try {
+                player2.setDataSource(getApplicationContext(), trackUri);
+            } catch (Exception e) {
+                Log.e("MUSIC SERVICE", "Error setting data source", e);
+            }
+
+            player2.prepareAsync();
+        }
+        numSongs++;
     }
 
     public void setSong(int songIndex){
