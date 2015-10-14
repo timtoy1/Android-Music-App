@@ -128,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void songPicked(View view){
         musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
+    }
+
+    public void play(View view){
         musicSrv.playSong();
     }
 
