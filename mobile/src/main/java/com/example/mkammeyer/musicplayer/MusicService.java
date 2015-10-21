@@ -80,6 +80,24 @@ public class MusicService extends Service {
         player2.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
 
+    public void updateVolume(int sliderVal){
+        if(sliderVal == 50){
+            player.setVolume(1, 1);
+            player2.setVolume(1, 1);
+        }
+        else if(sliderVal > 50 ){
+            float vol1 = 1 - ((sliderVal - 50)/ 50.0f);
+            player2.setVolume(1, 1);
+            player.setVolume(vol1, vol1);
+        }
+        else if(sliderVal < 50){
+            float vol2 = 1 - ((50 - sliderVal)/ 50.0f);
+            player.setVolume(1, 1);
+            player2.setVolume(vol2, vol2);
+        }
+
+    }
+
     public void setList(ArrayList<Song> theSongs){
         songs=theSongs;
     }

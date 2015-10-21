@@ -19,14 +19,17 @@ package com.example.mkammeyer.musicplayer;
         import android.view.MenuItem;
         import android.view.View;
         import com.example.mkammeyer.musicplayer.MusicService.MusicBinder;
+        import android.widget.SeekBar;
+        import android.widget.SeekBar.OnSeekBarChangeListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnSeekBarChangeListener{
 
     private ArrayList<Song> songList;
     private ListView songView;
     private MusicService musicSrv;
     private Intent playIntent;
     private boolean musicBound=false;
+    private SeekBar faderBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,24 @@ public class MainActivity extends AppCompatActivity {
 
         SongAdapter songAdt = new SongAdapter(this, songList);
         songView.setAdapter(songAdt);
+
+        faderBar = (SeekBar)findViewById(R.id.seekBar);
+        faderBar.setOnSeekBarChangeListener(this);
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekbar){
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekbar){
+
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser){
+        musicSrv.updateVolume(progress);
     }
 
     //connect to the service
