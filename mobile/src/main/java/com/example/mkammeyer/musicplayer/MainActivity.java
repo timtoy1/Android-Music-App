@@ -25,7 +25,8 @@ package com.example.mkammeyer.musicplayer;
 public class MainActivity extends AppCompatActivity implements OnSeekBarChangeListener{
 
     private ArrayList<Song> songList;
-    private ListView songView;
+    private ListView rightSongView;
+    private ListView leftSongView;
     private MusicService musicSrv;
     private Intent playIntent;
     private boolean musicBound=false;
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         setContentView(R.layout.activity_dj);
 
 
-        songView = (ListView)findViewById(R.id.song_list);
+        leftSongView = (ListView)findViewById(R.id.left_song_list);
+        rightSongView = (ListView)findViewById(R.id.right_song_list);
         songList = new ArrayList<Song>();
 
         getSongList();
@@ -49,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         });
 
         SongAdapter songAdt = new SongAdapter(this, songList);
-        songView.setAdapter(songAdt);
+        leftSongView.setAdapter(songAdt);
+        rightSongView.setAdapter(songAdt);
 
         faderBar = (SeekBar)findViewById(R.id.seekBar);
         faderBar.setOnSeekBarChangeListener(this);
@@ -147,6 +150,20 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
 
     public void playRight(View view){
         musicSrv.playSong(1);
+    }
+
+    public void pauseLeft(View view){
+        if(musicSrv.isPng(0))
+            musicSrv.pausePlayer(0);
+        else
+            musicSrv.go(0);
+    }
+
+    public void pauseRight(View view){
+        if(musicSrv.isPng(1))
+            musicSrv.pausePlayer(1);
+        else
+            musicSrv.go(1);
     }
 
     @Override

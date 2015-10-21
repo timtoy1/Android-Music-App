@@ -42,8 +42,13 @@ public class SongAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //map to song layout
-        LinearLayout songLay = (LinearLayout)songInf.inflate
-                (R.layout.song, parent, false);
+        LinearLayout songLay;
+        if(parent.getId() == R.id.left_song_list)
+            songLay = (LinearLayout)songInf.inflate
+                    (R.layout.left_song, parent, false);
+        else
+            songLay = (LinearLayout)songInf.inflate
+                    (R.layout.right_song, parent, false);
         //get title and artist views
         TextView songView = (TextView)songLay.findViewById(R.id.song_title);
         TextView artistView = (TextView)songLay.findViewById(R.id.song_artist);

@@ -39,6 +39,7 @@
         android:layout_alignBottom="@+id/imageButton"
         android:layout_toEndOf="@+id/imageButton"
         android:src="@drawable/pause"
+        android:onClick="pauseLeft"
         android:layout_alignTop="@+id/imageButton"
         android:layout_toRightOf="@+id/imageButton" />
 
@@ -47,6 +48,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageButton4"
         android:src="@drawable/pause"
+        android:onClick="pauseRight"
         android:layout_marginRight="44dp"
         android:layout_marginEnd="44dp"
         android:layout_alignTop="@+id/imageButton2"
