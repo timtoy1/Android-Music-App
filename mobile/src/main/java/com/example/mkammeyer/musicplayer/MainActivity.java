@@ -19,15 +19,17 @@ package com.example.mkammeyer.musicplayer;
         import android.view.MenuItem;
         import android.view.View;
         import com.example.mkammeyer.musicplayer.MusicService.MusicBinder;
+        import android.widget.MediaController.MediaPlayerControl;
+        import android.widget.SeekBar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
     private ArrayList<Song> songList;
     private ListView songView;
     private MusicService musicSrv;
     private Intent playIntent;
     private boolean musicBound=false;
-
+    private SeekBar leftSeekBar, rightSeekBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
         SongAdapter songAdt = new SongAdapter(this, songList);
         songView.setAdapter(songAdt);
+
+        leftSeekBar = (SeekBar) findViewById(R.id.leftSeekBar);
+        leftSeekBar.setOnSeekBarChangeListener(this);
+
+        rightSeekBar = (SeekBar) findViewById(R.id.rightSeekBar);
+        rightSeekBar.setOnSeekBarChangeListener(this);
     }
+
 
     //connect to the service
     private ServiceConnection musicConnection = new ServiceConnection(){
@@ -74,21 +83,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     public void getSongList() {
         //retrieve song info
@@ -126,12 +120,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void songPicked(View view){
-        musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
+    public void leftSongPicked(View view){
+        musicSrv.setLeftSong(Integer.parseInt(view.getTag().toString()));
     }
 
-    public void play(View view){
-        musicSrv.playSong();
+    public void rightSongPicked(View view){
+        musicSrv.setRightSong(Integer.parseInt(view.getTag().toString()));
+    }
+
+    public void playLeft(View view){
+        musicSrv.playSong(0);
+    }
+
+    public void playRight(View view){
+        musicSrv.playSong(1);
     }
 
     @Override
@@ -155,5 +157,27 @@ public class MainActivity extends AppCompatActivity {
         stopService(playIntent);
         musicSrv=null;
         super.onDestroy();
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if(fromUser) {
+            if(seekBar.getId() == R.id.leftSeekBar) {
+                musicSrv.seek(0, progress);
+            }
+            else {
+                musicSrv.seek(1, progress);
+            }
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }

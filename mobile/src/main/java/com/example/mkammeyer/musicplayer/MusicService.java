@@ -28,7 +28,8 @@ public class MusicService extends Service {
     //song list
     private ArrayList<Song> songs;
     //current position
-    private int songPosn;
+    private int leftSongPosn;
+    private int rightSongPosn;
     private final IBinder musicBind = new MusicBinder();
 
 
@@ -51,7 +52,8 @@ public class MusicService extends Service {
         super.onCreate();
         //initialize position
         numSongs=0;
-        songPosn=0;
+        leftSongPosn=0;
+        rightSongPosn=0;
         //create player
         player = new MediaPlayer();
         player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -90,12 +92,12 @@ public class MusicService extends Service {
         }
     }
 
-    public void playSong(){
-        if(numSongs % 2 == 0) {
+    public void playSong(int leftOrRight){
+        if(leftOrRight == 0) {
             //play a song
             player.reset();
             //get song
-            Song playSong = songs.get(songPosn);
+            Song playSong = songs.get(leftSongPosn);
             //get id
             long currSong = playSong.getID();
             //set uri
@@ -115,7 +117,7 @@ public class MusicService extends Service {
             //play a song
             player2.reset();
             //get song
-            Song playSong = songs.get(songPosn);
+            Song playSong = songs.get(rightSongPosn);
             //get id
             long currSong = playSong.getID();
             //set uri
@@ -134,13 +136,63 @@ public class MusicService extends Service {
         numSongs++;
     }
 
-    public void setSong(int songIndex){
-        songPosn=songIndex;
+    public MediaPlayer getMediaPlayer(int leftOrRight) {
+        if(leftOrRight==0) {
+            return player;
+        }
+
+        else {
+            return player2;
+        }
     }
 
-//    @Override
-//    public void onPrepared(MediaPlayer mp) {
-//        //start playback
-//        mp.start();
-//    }
+    public void setLeftSong(int songIndex) {
+        leftSongPosn=songIndex;
+    }
+
+    public void setRightSong(int songIndex) {
+        rightSongPosn=songIndex;
+    }
+
+    public int getPosn(int leftOrRight) {
+        if(leftOrRight == 0)
+            return player.getCurrentPosition();
+        else
+            return player2.getCurrentPosition();
+    }
+
+    public int getDur(int leftOrRight) {
+        if(leftOrRight == 0)
+            return player.getDuration();
+        else
+            return player2.getDuration();
+    }
+
+    public boolean isPng(int leftOrRight) {
+        if(leftOrRight == 0)
+            return player.isPlaying();
+        else
+            return player2.isPlaying();
+    }
+
+    public void pausePlayer(int leftOrRight) {
+        if(leftOrRight == 0)
+            player.pause();
+        else
+            player2.pause();
+    }
+
+    public void seek(int leftOrRight, int posn) {
+        if(leftOrRight == 0)
+            player.seekTo(posn);
+        else
+            player2.seekTo(posn);
+    }
+
+    public void go(int leftOrRight) {
+        if(leftOrRight == 0)
+            player.start();
+        else
+            player2.start();
+    }
 }
