@@ -19,17 +19,18 @@ package com.example.mkammeyer.musicplayer;
         import android.view.MenuItem;
         import android.view.View;
         import com.example.mkammeyer.musicplayer.MusicService.MusicBinder;
-        import android.widget.MediaController.MediaPlayerControl;
         import android.widget.SeekBar;
+        import android.widget.SeekBar.OnSeekBarChangeListener;
 
-public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
+public class MainActivity extends AppCompatActivity implements OnSeekBarChangeListener{
 
     private ArrayList<Song> songList;
     private ListView songView;
     private MusicService musicSrv;
     private Intent playIntent;
     private boolean musicBound=false;
-    private SeekBar leftSeekBar, rightSeekBar;
+    private SeekBar faderBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +51,23 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         SongAdapter songAdt = new SongAdapter(this, songList);
         songView.setAdapter(songAdt);
 
-        leftSeekBar = (SeekBar) findViewById(R.id.leftSeekBar);
-        leftSeekBar.setOnSeekBarChangeListener(this);
+        faderBar = (SeekBar)findViewById(R.id.seekBar);
+        faderBar.setOnSeekBarChangeListener(this);
+    }
 
-        rightSeekBar = (SeekBar) findViewById(R.id.rightSeekBar);
-        rightSeekBar.setOnSeekBarChangeListener(this);
+    @Override
+    public void onStartTrackingTouch(SeekBar seekbar){
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekbar){
+
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser){
+        musicSrv.updateVolume(progress);
     }
 
 
@@ -157,27 +170,5 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         stopService(playIntent);
         musicSrv=null;
         super.onDestroy();
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if(fromUser) {
-            if(seekBar.getId() == R.id.leftSeekBar) {
-                musicSrv.seek(0, progress);
-            }
-            else {
-                musicSrv.seek(1, progress);
-            }
-        }
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
     }
 }

@@ -15,7 +15,7 @@
         android:id="@+id/imageButton"
         android:layout_marginLeft="46dp"
         android:layout_marginStart="46dp"
-        android:layout_marginBottom="93dp"
+        android:layout_marginBottom="30dp"
         android:src="@drawable/play"
         android:onClick="playLeft"
         android:layout_alignParentBottom="true"
@@ -56,21 +56,11 @@
     <SeekBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/leftSeekBar"
-        android:layout_below="@+id/imageButton3"
-        android:layout_alignLeft="@+id/imageButton"
-        android:layout_alignStart="@+id/imageButton"
-        android:layout_alignRight="@+id/imageButton3"
-        android:layout_alignEnd="@+id/imageButton3" />
-
-    <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rightSeekBar"
-        android:layout_alignBottom="@+id/leftSeekBar"
-        android:layout_alignLeft="@+id/imageButton2"
-        android:layout_alignStart="@+id/imageButton2"
-        android:layout_alignRight="@+id/imageButton4"
-        android:layout_alignEnd="@+id/imageButton4" />
-
+        android:id="@+id/seekBar"
+        android:layout_above="@+id/imageButton3"
+        android:layout_marginBottom="10dp"
+        android:layout_toRightOf="@+id/imageButton"
+        android:layout_toStartOf="@+id/imageButton4"
+        android:layout_toLeftOf="@+id/imageButton4"
+        android:max="100"/>
 </RelativeLayout>
