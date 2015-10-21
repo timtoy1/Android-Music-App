@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dj);
 
 
         songView = (ListView)findViewById(R.id.song_list);
@@ -128,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void songPicked(View view){
         musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
+    }
+
+    public void play(View view){
         musicSrv.playSong();
     }
 
