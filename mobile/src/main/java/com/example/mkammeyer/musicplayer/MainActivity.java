@@ -21,6 +21,7 @@ package com.example.mkammeyer.musicplayer;
         import com.example.mkammeyer.musicplayer.MusicService.MusicBinder;
         import android.widget.SeekBar;
         import android.widget.SeekBar.OnSeekBarChangeListener;
+        import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements OnSeekBarChangeListener{
 
@@ -57,6 +58,15 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
 
         faderBar = (SeekBar)findViewById(R.id.seekBar);
         faderBar.setOnSeekBarChangeListener(this);
+
+        TextView name1 = (TextView)findViewById(R.id.textView);
+        TextView artist1 = (TextView)findViewById(R.id.textView3);
+        TextView name2 = (TextView)findViewById(R.id.textView2);
+        TextView artist2 = (TextView)findViewById(R.id.textView4);
+        name1.setText(songList.get(0).getTitle());
+        artist1.setText(songList.get(0).getArtist());
+        name2.setText(songList.get(0).getTitle());
+        artist2.setText(songList.get(0).getArtist());
     }
 
     @Override
@@ -143,7 +153,14 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         View playButton = findViewById(R.id.imageButton);
         pauseButton.setVisibility(View.INVISIBLE);
         playButton.setVisibility(View.VISIBLE);
-        musicSrv.setLeftSong(Integer.parseInt(view.getTag().toString()));
+
+        int index = Integer.parseInt(view.getTag().toString());
+        musicSrv.setLeftSong(index);
+
+        TextView name = (TextView)findViewById(R.id.textView);
+        TextView artist = (TextView)findViewById(R.id.textView3);
+        name.setText(songList.get(index).getTitle());
+        artist.setText(songList.get(index).getArtist());
     }
 
     public void rightSongPicked(View view){
@@ -152,7 +169,13 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         View playButton = findViewById(R.id.imageButton2);
         pauseButton.setVisibility(View.INVISIBLE);
         playButton.setVisibility(View.VISIBLE);
-        musicSrv.setRightSong(Integer.parseInt(view.getTag().toString()));
+        int index = Integer.parseInt(view.getTag().toString());
+        musicSrv.setRightSong(index);
+
+        TextView name = (TextView)findViewById(R.id.textView2);
+        TextView artist = (TextView)findViewById(R.id.textView4);
+        name.setText(songList.get(index).getTitle());
+        artist.setText(songList.get(index).getArtist());
     }
 
     public void playLeft(View view){
