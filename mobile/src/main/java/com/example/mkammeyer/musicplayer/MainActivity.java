@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
     private Intent playIntent;
     private boolean musicBound=false;
     private SeekBar faderBar;
-
+    private boolean pausedLeft = false;
+    private boolean pausedRight = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,33 +138,59 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
     }
 
     public void leftSongPicked(View view){
+        pausedLeft = false;
+        View pauseButton = findViewById(R.id.imageButton3);
+        View playButton = findViewById(R.id.imageButton);
+        pauseButton.setVisibility(View.INVISIBLE);
+        playButton.setVisibility(View.VISIBLE);
         musicSrv.setLeftSong(Integer.parseInt(view.getTag().toString()));
     }
 
     public void rightSongPicked(View view){
+        pausedRight = false;
+        View pauseButton = findViewById(R.id.imageButton4);
+        View playButton = findViewById(R.id.imageButton2);
+        pauseButton.setVisibility(View.INVISIBLE);
+        playButton.setVisibility(View.VISIBLE);
         musicSrv.setRightSong(Integer.parseInt(view.getTag().toString()));
     }
 
     public void playLeft(View view){
-        musicSrv.playSong(0);
+        View pauseButton = findViewById(R.id.imageButton3);
+        pauseButton.setVisibility(View.VISIBLE);
+        view.setVisibility(View.INVISIBLE);
+        if(pausedLeft) {
+            musicSrv.go(0);
+        }
+        else
+            musicSrv.playSong(0);
     }
 
     public void playRight(View view){
-        musicSrv.playSong(1);
+        View pauseButton = findViewById(R.id.imageButton4);
+        pauseButton.setVisibility(View.VISIBLE);
+        view.setVisibility(View.INVISIBLE);
+        if(pausedRight) {
+            musicSrv.go(1);
+        }
+        else
+            musicSrv.playSong(1);
     }
 
     public void pauseLeft(View view){
-        if(musicSrv.isPng(0))
-            musicSrv.pausePlayer(0);
-        else
-            musicSrv.go(0);
+        pausedLeft = true;
+        View playButton = findViewById(R.id.imageButton);
+        playButton.setVisibility(View.VISIBLE);
+        view.setVisibility(View.INVISIBLE);
+        musicSrv.pausePlayer(0);
     }
 
     public void pauseRight(View view){
-        if(musicSrv.isPng(1))
-            musicSrv.pausePlayer(1);
-        else
-            musicSrv.go(1);
+        pausedRight = true;
+        View playButton = findViewById(R.id.imageButton2);
+        playButton.setVisibility(View.VISIBLE);
+        view.setVisibility(View.INVISIBLE);
+        musicSrv.pausePlayer(1);
     }
 
     @Override

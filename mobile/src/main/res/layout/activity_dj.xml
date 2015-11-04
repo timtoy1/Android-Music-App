@@ -5,29 +5,28 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:fitsSystemWindows="true" tools:openDrawer="start">
 
-    <include layout="@layout/app_bar_dj" android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <include layout="@layout/content_dj" />
 
     <android.support.design.widget.NavigationView android:id="@+id/nav_view_left"
-        android:layout_width="wrap_content" android:layout_height="match_parent"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_gravity="start" android:fitsSystemWindows="true">
 
         <ListView
             android:id="@+id/left_song_list"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="match_parent" >
         </ListView>
 
     </android.support.design.widget.NavigationView>
 
     <android.support.design.widget.NavigationView android:id="@+id/nav_view_right"
-        android:layout_width="wrap_content" android:layout_height="match_parent"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_gravity="right" android:fitsSystemWindows="true">
 
         <ListView
             android:id="@+id/right_song_list"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="match_parent" >
         </ListView>
 
     </android.support.design.widget.NavigationView>
