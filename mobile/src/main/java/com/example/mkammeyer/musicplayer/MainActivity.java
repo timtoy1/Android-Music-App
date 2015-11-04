@@ -1,6 +1,7 @@
 package com.example.mkammeyer.musicplayer;
 
-        import android.support.v7.app.AppCompatActivity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
         import android.view.Menu;
         import android.view.MenuItem;
@@ -34,11 +35,11 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
     private SeekBar faderBar;
     private boolean pausedLeft = false;
     private boolean pausedRight = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dj);
-
 
         leftSongView = (ListView)findViewById(R.id.left_song_list);
         rightSongView = (ListView)findViewById(R.id.right_song_list);
@@ -161,6 +162,11 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         TextView artist = (TextView)findViewById(R.id.textView3);
         name.setText(songList.get(index).getTitle());
         artist.setText(songList.get(index).getArtist());
+
+        musicSrv.setLeftSong(Integer.parseInt(view.getTag().toString()));
+
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(findViewById(R.id.nav_view_left));
     }
 
     public void rightSongPicked(View view){
@@ -169,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         View playButton = findViewById(R.id.imageButton2);
         pauseButton.setVisibility(View.INVISIBLE);
         playButton.setVisibility(View.VISIBLE);
+
         int index = Integer.parseInt(view.getTag().toString());
         musicSrv.setRightSong(index);
 
@@ -176,6 +183,11 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         TextView artist = (TextView)findViewById(R.id.textView4);
         name.setText(songList.get(index).getTitle());
         artist.setText(songList.get(index).getArtist());
+
+        musicSrv.setRightSong(Integer.parseInt(view.getTag().toString()));
+
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(findViewById(R.id.nav_view_right));
     }
 
     public void playLeft(View view){
