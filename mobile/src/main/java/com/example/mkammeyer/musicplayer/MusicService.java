@@ -16,9 +16,7 @@ import android.util.Log;
 /**
  * Created by mkammeyer on 9/23/15.
  */
-//
-//, MediaPlayer.OnErrorListener,
-//        MediaPlayer.OnCompletionListener
+
 public class MusicService extends Service {
 
     //media player

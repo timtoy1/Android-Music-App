@@ -20,7 +20,9 @@
         android:onClick="playLeft"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:keepScreenOn="true"
+        android:background="@null" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -30,7 +32,8 @@
         android:onClick="playRight"
         android:layout_below="@+id/seekBar"
         android:layout_alignLeft="@+id/imageButton4"
-        android:layout_alignStart="@+id/imageButton4" />
+        android:layout_alignStart="@+id/imageButton4"
+        android:background="@null" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -41,7 +44,8 @@
         android:visibility="invisible"
         android:layout_alignTop="@+id/imageButton"
         android:layout_toLeftOf="@+id/seekBar"
-        android:layout_toStartOf="@+id/seekBar" />
+        android:layout_toStartOf="@+id/seekBar"
+        android:background="@null" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -54,7 +58,8 @@
         android:layout_alignTop="@+id/imageButton2"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:background="@null" />
 
     <SeekBar
         android:layout_width="wrap_content"
@@ -103,4 +108,20 @@
         android:layout_alignTop="@+id/textView3"
         android:layout_alignRight="@+id/textView2"
         android:layout_alignEnd="@+id/textView2" />
+
+    <SeekBar
+        android:layout_width="400px"
+        android:layout_height="wrap_content"
+        android:id="@+id/songBar1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <SeekBar
+        android:layout_width="400px"
+        android:layout_height="wrap_content"
+        android:id="@+id/songBar2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

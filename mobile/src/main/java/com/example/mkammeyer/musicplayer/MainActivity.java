@@ -1,5 +1,6 @@
 package com.example.mkammeyer.musicplayer;
 
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
         import java.util.ArrayList;
         import java.util.Collections;
         import java.util.Comparator;
-        import android.net.Uri;
+import java.util.logging.Logger;
+
+import android.net.Uri;
         import android.content.ContentResolver;
         import android.database.Cursor;
         import android.widget.ListView;
@@ -33,14 +36,16 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
     private Intent playIntent;
     private boolean musicBound=false;
     private SeekBar faderBar;
+    private SeekBar songBar1;
+    private SeekBar songBar2;
     private boolean pausedLeft = false;
     private boolean pausedRight = false;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dj);
-
         leftSongView = (ListView)findViewById(R.id.left_song_list);
         rightSongView = (ListView)findViewById(R.id.right_song_list);
         songList = new ArrayList<Song>();
@@ -60,6 +65,11 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         faderBar = (SeekBar)findViewById(R.id.seekBar);
         faderBar.setOnSeekBarChangeListener(this);
 
+        songBar1 = (SeekBar)findViewById(R.id.songBar1);
+        songBar1.setOnSeekBarChangeListener(this);
+        songBar2 = (SeekBar)findViewById(R.id.songBar2);
+        songBar2.setOnSeekBarChangeListener(this);
+
         TextView name1 = (TextView)findViewById(R.id.textView);
         TextView artist1 = (TextView)findViewById(R.id.textView3);
         TextView name2 = (TextView)findViewById(R.id.textView2);
@@ -68,21 +78,67 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         artist1.setText(songList.get(0).getArtist());
         name2.setText(songList.get(0).getTitle());
         artist2.setText(songList.get(0).getArtist());
+
+        updateProgressBar();
     }
+
+
+    public void updateProgressBar() {
+        mHandler.postDelayed(mUpdateTimeTask, 100);
+    }
+
+    /**
+     * Background Runnable thread
+     * */
+    private Runnable mUpdateTimeTask = new Runnable() {
+
+        public void run() {
+            int position, max;
+            if(musicSrv.isPng(0)) {
+                position = musicSrv.getPosn(0);
+                max = musicSrv.getDur(0);
+                songBar1.setProgress(position);
+                songBar1.setMax(max);
+            }
+
+            if(musicSrv.isPng(1)) {
+                position = musicSrv.getPosn(1);
+                max = musicSrv.getDur(1);
+                songBar2.setProgress(position);
+                songBar2.setMax(max);
+            }
+
+            mHandler.postDelayed(this, 100);
+        }
+    };
 
     @Override
     public void onStartTrackingTouch(SeekBar seekbar){
-
+        if(seekbar.getId() != R.id.seekBar)
+            mHandler.removeCallbacks(mUpdateTimeTask);
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekbar){
+        int progress = seekbar.getProgress();
 
+        if(seekbar.getId() == R.id.songBar1) {
+            musicSrv.seek(0, progress);
+            updateProgressBar();
+        }
+
+        else if(seekbar.getId() == R.id.songBar2) {
+            musicSrv.seek(1, progress);
+            updateProgressBar();
+        }
     }
 
     @Override
     public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser){
-        musicSrv.updateVolume(progress);
+
+        if(seekbar.getId() == R.id.seekBar) {
+            musicSrv.updateVolume(progress);
+        }
     }
 
 
@@ -164,6 +220,8 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         artist.setText(songList.get(index).getArtist());
 
         musicSrv.setLeftSong(Integer.parseInt(view.getTag().toString()));
+        songBar1.setMax(musicSrv.getDur(0));
+        songBar1.setProgress(musicSrv.getPosn(0));
 
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(findViewById(R.id.nav_view_left));
@@ -185,12 +243,14 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         artist.setText(songList.get(index).getArtist());
 
         musicSrv.setRightSong(Integer.parseInt(view.getTag().toString()));
+        songBar2.setMax(musicSrv.getDur(1));
+        songBar2.setProgress(musicSrv.getPosn(1));
 
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(findViewById(R.id.nav_view_right));
     }
 
-    public void playLeft(View view){
+    public void playLeft(View view) {
         View pauseButton = findViewById(R.id.imageButton3);
         pauseButton.setVisibility(View.VISIBLE);
         view.setVisibility(View.INVISIBLE);
