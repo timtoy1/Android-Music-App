@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         rightSongView.setAdapter(songAdt);
 
         faderBar = (SeekBar)findViewById(R.id.seekBar);
+        faderBar.setProgress(50);
         faderBar.setOnSeekBarChangeListener(this);
 
         songBar1 = (SeekBar)findViewById(R.id.songBar1);
