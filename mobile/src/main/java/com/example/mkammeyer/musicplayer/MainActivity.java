@@ -23,7 +23,10 @@ import android.net.Uri;
         import android.view.MenuItem;
         import android.view.View;
         import com.example.mkammeyer.musicplayer.MusicService.MusicBinder;
-        import android.widget.SeekBar;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
+import android.widget.SeekBar;
         import android.widget.SeekBar.OnSeekBarChangeListener;
         import android.widget.TextView;
 
@@ -49,6 +52,12 @@ public class MainActivity extends AppCompatActivity implements OnSeekBarChangeLi
         leftSongView = (ListView)findViewById(R.id.left_song_list);
         rightSongView = (ListView)findViewById(R.id.right_song_list);
         songList = new ArrayList<Song>();
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("YOUR_DEVICE_HASH")
+                .build();
+        mAdView.loadAd(adRequest);
 
         getSongList();
 
